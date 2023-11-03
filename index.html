@@ -72,9 +72,110 @@
     </div>
   </div>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
 <script>
   // Add your code here!
+  
+  //Part 1:
+  //1. When the DOM is ready, console.log the message “Let’s get ready to party with jQuery!”
+  $(function(){
+    console.log("Let's get ready to party with jQuery!" );
+  });
+  //2. Give all images inside of an article tag the class of image-center (this class is defined inside of the style tag in the head).
+  $("article img").addClass('image-center');
+  //3. Remove the last paragraph in the article.
+  $("article p").remove(':last-of-type');
+  //4. Set the font size of the title to be a random pixel size from 0 to 100.
+  $('h1').css('font-size', Math.floor(Math.random()*100));
+  //5. Add an item to the list; it can say whatever you want.
+  $('ol').append($('<li>', {text: "doggeh"}));
+  //6. Scratch that; the list is silly. Empty the aside and put a paragraph in it apologizing for the list’s existence.
+  $('aside').empty().append($('<p>', {text: 'Sorry about that, here are more doggehs!'}));
+  //7. When you change the numbers in the three inputs on the bottom, the background color of the body should change to match whatever the three values in the inputs are.
+  $('.form-control').on('change', function(){
+    let red = $('.form-control').eq(0).val();
+    let blue = $('.form-control').eq(1).val();
+    let green = $('.form-control').eq(2).val();
+    $('body').css('background-color', 'rgb(' + red + ',' + green + ',' + blue + ')')
+  })
+  
+  //8. Add an event listener so that when you click on the image, it is removed from the DOM.
+  $('img').on('click', function(e) {$(e.target).remove()});
+  
+  //Part 2: Movies App
+  let movieCount = 0;
+  let movieList = [];
+
+  $('<form>')
+      .append('<label for = "movie"> Movie Name: </>')
+      .append('<input type = "text" id = "movie" name = "movie" minlength = "2" required/>')
+      .append('<label for = "rating"> Rating: </>')
+      .append('<input type = "number" id = "rating" name = "rating" placeholder = "1-10" min = "1" max = "10" required/>')
+      .append('<input type = "submit" id = "submit" value = "submit"/>')
+      .append('<input type = "button" id = "sort-abc" value = "Sort by ABC"/>')
+      .append('<input type = "button" id = "sort-rating" value = "Sort by Rating"/>')
+      .addClass('movie-form')
+      .appendTo('.container');
+  
+    $('<table>').addClass('movie-list').appendTo('.container');
+    $('<tr>').addClass('header').appendTo('.movie-list');
+    $('<th>').addClass('name-header').appendTo('.header').text('Movie Name');
+    $('<th>').addClass('rating-header').appendTo('.header').text('Rating');
+    
+    $('.movie-form').on('submit', evt => {
+      evt.preventDefault();
+      movieCount++;
+      const movie = $('#movie').val();
+      const rating = $('#rating').val();
+      const movieObj = {};
+      console.log('clicked: ' + movie + ' ' + rating);
+      $('<tr>').addClass(`movie-${movieCount}`).appendTo('.movie-list');
+      $('<td>').addClass('movie-name').appendTo(`.movie-${movieCount}`).text(movie);
+      $('<td>').addClass('movie-rating').appendTo(`.movie-${movieCount}`).text(rating);
+
+      movieList.push({'movie': movieCount, 'rating': rating});
+      $('<button>').addClass(`remove-btn`).text('X').appendTo(`.movie-${movieCount}`);
+      $('#movie').val('');
+      $('#rating').val('');
+      console.log('Movie Count: ' + movieCount);
+    });
+  
+
+  $('table').on("click", ".remove-btn", e => $(e.target).closest('tr').remove());
+
+//create function for sort by abc
+  $('.movie-form').on("click", "#sort-abc", function() {
+    console.log('clicked sort ABC');
+    let sortABC = $('.movie-list')
+      .children('tr').slice(1)
+      .get()
+      .sort(function(a, b) {
+        return $(a).children('.movie-name').text().toUpperCase().localeCompare($(b).children('.movie-name').text().toUpperCase());
+      });
+    $.each(sortABC, function(idx, itm) {
+      $('.movie-list').append(itm);
+    });
+    console.log(sortABC);
+  });
+
+  //create function for sort by rating
+  $('.movie-form').on("click", "#sort-rating", function() {
+    console.log('clicked sort rating');
+
+    let sortRating = $('.movie-list')
+      .children('tr').slice(1)
+      .get()
+      .sort(function(a, b) {
+        return $(a).children('.movie-rating').text().toUpperCase().localeCompare($(b).children('.movie-rating').text().toUpperCase());
+      });
+    $.each(sortRating, function(idx, itm) {
+      $('.movie-list').append(itm);
+    });
+    console.log(sortRating);
+  });
+
 </script>
 </body>
 
