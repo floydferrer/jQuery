@@ -152,29 +152,98 @@
       .children('tr').slice(1)
       .get()
       .sort(function(a, b) {
-        return $(a).children('.movie-name').text().toUpperCase().localeCompare($(b).children('.movie-name').text().toUpperCase());
+        const nameCompare = $(a).children('.movie-name').text().toUpperCase().localeCompare($(b).children('.movie-name').text().toUpperCase());
+        if (nameCompare === 0) {
+          return Number($(a).children('td.movie-rating').text()) - Number($(b).children('td.movie-rating').text());
+        } 
+          return nameCompare;
       });
     $.each(sortABC, function(idx, itm) {
       $('.movie-list').append(itm);
     });
-    console.log(sortABC);
   });
+
+//CODE IS NOT RE-SORTING .MOVIE-LIST
+  // $('.movie-form').on("click", "#sort-abc", function() {
+  //   console.log('clicked sort abc');
+  //   let sortABC = [];
+  //   const movieNameList = $('.movie-list > tr:has(td)');//.
+  //   console.log(movieNameList);
+  //   for(i = 0; i < movieNameList.length; i++) {
+  //     sortABC.push(movieNameList.get(i));
+  //   }
+  //   sortABC.sort(function (a, b) {
+  //     const aName = $(a).children('td.movie-name').text();
+  //     const bName = $(b).children('td.movie-name').text();
+  //     console.log(aName);
+  //     console.log(bName);
+  //     if(aName === bName){
+  //       return Number($(a).children('td.movie-rating').text()) - Number($(b).children('td.movie-rating').text());
+  //     }
+  //     return aName - bName;
+  //   });
+  //   console.log(sortABC);
+  //   $.each(sortABC, function(idx, itm) {
+  //     $('.movie-list').append(itm);
+  //   });
+  // });
+
 
   //create function for sort by rating
   $('.movie-form').on("click", "#sort-rating", function() {
     console.log('clicked sort rating');
+    let sortRating = [];
+    const movieRatingsList = $('.movie-list > tr:has(td)');//.
+    for(i = 0; i < movieRatingsList.length; i++) {
+      sortRating.push(movieRatingsList.get(i));
+    }
+    sortRating.sort(function (a, b) {
+      const aToNum = Number($(a).children('td.movie-rating').text());
+      const bToNum = Number($(b).children('td.movie-rating').text());
 
-    let sortRating = $('.movie-list')
-      .children('tr').slice(1)
-      .get()
-      .sort(function(a, b) {
-        return $(a).children('.movie-rating').text().toUpperCase().localeCompare($(b).children('.movie-rating').text().toUpperCase());
-      });
+      if(aToNum === bToNum){
+        return $(a).children('.movie-name').text().toUpperCase().localeCompare($(b).children('.movie-name').text().toUpperCase());
+      }
+        return aToNum - bToNum;
+    });
     $.each(sortRating, function(idx, itm) {
       $('.movie-list').append(itm);
     });
-    console.log(sortRating);
   });
+  // console.log(sortRating);
+  // console.log(sortRating[0]);
+    // $('.movie-list')
+    //   .children('tr').slice(1)
+    //   .get()
+    //   .sort(function(a, b) {
+    //     const ratingCompare = $(a).children('.movie-rating').text().toUpperCase().localeCompare($(b).children('.movie-rating').text().toUpperCase());
+    //     if (ratingCompare === 0) {
+    //       return $(a).children('.movie-name').text().toUpperCase().localeCompare($(b).children('.movie-name').text().toUpperCase());
+    //     } 
+    //       return ratingCompare;
+    //     // return $(a).children('.movie-rating').text().toUpperCase().localeCompare($(b).children('.movie-rating').text().toUpperCase());
+    //   });
+    // $.each(sortRating, function(idx, itm) {
+    //   $('.movie-list').append(itm);
+    // });
+    // console.log(sortRating);
+
+  // 
+
+  // $('.movie-form').on("click", "#sort-rating", function() {
+  //   console.log('clicked sort rating');
+
+  //   let sortRating = $('.movie-list')
+  //     .children('tr').slice(1)
+  //     .get()
+  //     .sort(function(a, b) {
+  //       return $(a).children('.movie-rating').text().toUpperCase().localeCompare($(b).children('.movie-rating').text().toUpperCase());
+  //     });
+  //   $.each(sortRating, function(idx, itm) {
+  //     $('.movie-list').append(itm);
+  //   });
+  //   console.log(sortRating);
+  // });
 
 </script>
 </body>
